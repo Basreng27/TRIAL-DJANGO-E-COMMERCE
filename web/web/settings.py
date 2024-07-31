@@ -28,6 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Load Aseets/Static
+STATIC_URL = '/assets/'
+STATICFILES_DIRS = [
+    BASE_DIR / "ecommerce/assets",
+]
 
 # Application definition
 
@@ -56,7 +61,7 @@ ROOT_URLCONF = 'web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'pages')],
+        'DIRS': [os.path.join(BASE_DIR, 'ecommerce/pages')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
