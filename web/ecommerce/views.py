@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .modules.auth.login import login_view
 from .modules.master.product import product_view
+from .modules.master.category import category_view
 
 def dashboard(request):
     data = {
@@ -13,6 +14,10 @@ def dashboard(request):
 def login(request):
     return login_view(request)
 
-# Master
+# Master Product
 def product(request):
     return product_view(request)
+
+# Master Category
+def category(request):
+    return category_view(request)
