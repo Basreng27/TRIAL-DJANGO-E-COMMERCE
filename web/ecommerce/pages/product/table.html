@@ -1,25 +1,34 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="5%">#</th>
-            <th>First</th>
-            <th>Last</th>
+            <th width="5%">No</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
             <th width="15%">Handle</th>
         </tr>
     </thead>
+    
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Update
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Delete
-                </button>
-            </td>
-        </tr>
+        {% for d in data %}
+            <tr>
+                <th scope="row">1</th>
+                <td>{{ d.name }}</td>
+                <td>{{ d.description }}</td>
+                <td>Rp.{{ d.price }}</td>
+                <td>{{ d.stock }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary modal-form" data-bs-toggle="modal" data-bs-target="#modalForm" data-url="{% url 'product-form-update' d.id %}">
+                        Update
+                    </button>
+                    <button type="button" class="btn btn-danger delete" data-url="{% url 'product-delete' d.id %}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
+
+{% include "template/pagination.html" %}

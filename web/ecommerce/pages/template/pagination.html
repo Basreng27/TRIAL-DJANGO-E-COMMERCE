@@ -1,0 +1,17 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        {% if data.has_previous %}
+            <a class="page-link" href="?page=1">&laquo; first</a>
+            <a class="page-link" href="?page={{ data.previous_page_number }}">previous</a>
+        {% endif %}
+    
+        <span class="page-link">
+            Page {{ data.number }} of {{ data.paginator.num_pages }}.
+        </span>
+    
+        {% if data.has_next %}
+            <a class="page-link" href="?page={{ data.next_page_number }}">next</a>
+            <a class="page-link" href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </ul>
+</nav>

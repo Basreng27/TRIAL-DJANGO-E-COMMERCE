@@ -20,6 +20,6 @@ from ecommerce import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ecommerce', include('ecommerce.urls')),
+    path('ecommerce/', include('ecommerce.urls')),
     path('', views.login)
 ]
