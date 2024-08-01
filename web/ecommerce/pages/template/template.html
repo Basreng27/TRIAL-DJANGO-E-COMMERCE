@@ -19,10 +19,12 @@
 
     {% load static %}
 
+    <!-- Bootsraps -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
 
-    <title>{% block title %} E-Commerce {% endblock %}</title>
+    <title>{% block title %} {{ title|default_if_none:"E-Commerce" }} {% endblock %}</title>
 
     <link href="{% static 'css/app.css' %}" rel="stylesheet" />
     <link
@@ -33,22 +35,26 @@
 
   <body>
     <div class="wrapper">
-      {% include "templates/sidebar.html" %}
+      {% include "template/sidebar.html" %}
       
       <div class="main">
-        {% include "templates/navbar.html" %}
+        {% include "template/navbar.html" %}
 
         <main class="content">
           {% block content %}
           {% endblock %}
         </main>
 
+        {% include "template/modal.html" %}
         <footer class="footer">
-          {% include "templates/footer.html" %}
+          {% include "template/footer.html" %}
         </footer>
       </div>
     </div>
 
-    <script src="{% static "js/app.js" %}"></script>
+    <!-- Bootsraps -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script src="{% static 'js/app.js' %}"></script>
   </body>
 </html>
