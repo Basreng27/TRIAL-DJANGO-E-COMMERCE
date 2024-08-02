@@ -6,14 +6,14 @@
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
-            <th width="15%">Handle</th>
+            <th width="15%">Action</th>
         </tr>
     </thead>
     
     <tbody>
         {% for d in data %}
             <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ d.name }}</td>
                 <td>{{ d.description }}</td>
                 <td>Rp.{{ d.price }}</td>

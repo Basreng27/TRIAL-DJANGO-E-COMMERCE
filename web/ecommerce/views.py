@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .modules.auth.login import login_view
 from .modules.master.product import page_product, delete_product, form_product
-from .modules.master.category import category_view
+from .modules.master.category import page_category, delete_category, form_category
 
 def dashboard(request):
     data = {
@@ -26,4 +26,10 @@ def product_delete(request, id=None):
 
 # Master Category
 def category(request):
-    return category_view(request)
+    return page_category(request)
+
+def category_form(request, id=None):
+    return form_category(request, id)
+
+def category_delete(request, id=None):
+    return delete_category(request, id)

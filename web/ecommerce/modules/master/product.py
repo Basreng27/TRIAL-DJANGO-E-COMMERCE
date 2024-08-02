@@ -1,17 +1,22 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.db.models import Q
 from ...models import Products
 from ...form import ProductForm
 from ...helpers import save_success, save_failed, delete_success, delete_failed, pagination_page
 
 def page_product(request):
-    name = request.GET.get('name')
+    name = request.GET.get('name', '').strip()
+    description = request.GET.get('description', '').strip()
+    
+    filters = Q()
     
     if name:
-        product = Products.objects.filter(name__icontains=name) # Like Filter
-    else:
-        product = Products.objects.all()
+        filters |= Q(name__icontains=name)
+    if description:
+        filters |= Q(description__icontains=description)
         
+    product = Products.objects.filter(filters)
     pagination = pagination_page(request, product)
     
     data = {

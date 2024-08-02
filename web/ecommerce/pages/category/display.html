@@ -7,14 +7,41 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'category' %}">
+                            <div class="row">
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name">
+                                </div>
+    
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-control" name="description">
+                                </div>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
                     <div class="card-header text-end">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            Add
-                        </button>
+                        <button type="button" class="btn btn-primary modal-form" data-bs-toggle="modal"
+                        data-bs-target="#modalForm" data-url="{% url 'category-form' %}">
+                        Add
+                    </button>
                     </div>
 
                     <div class="card-body">
-                        {% include "product/table.html" %}
+                        {% include "category/table.html" %}
                     </div>
                 </div>
             </div>
