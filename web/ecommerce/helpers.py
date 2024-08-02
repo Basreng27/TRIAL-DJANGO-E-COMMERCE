@@ -1,40 +1,37 @@
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+import json
 
-def save_success(url):
+# Response Json Success
+def response_success(url, title, message):
     return JsonResponse({
                 'status': True,
-                'title': "Save Data",
-                'message': "Successfully Save Data",
+                'title': title,
+                'message': message,
                 'icon': 'success',
                 'redirect': url
             })
 
-def save_failed():
+# Response Json Failed
+def response_failed(title, errors=None):
     return JsonResponse({
                 'status': False,
-                'title': "Save Data",
-                'message': "Failed Save Data",
+                'title': title,
+                'message': format_errors(json.loads(errors)),
                 'icon': 'error'
-            })
-    
-def delete_success(url):
-    return JsonResponse({
-                'status': True,
-                'title': "Delete Data",
-                'message': "Successfully Delete Data",
-                'icon': 'success',
-                'redirect': url
             })
 
-def delete_failed():
-    return JsonResponse({
-                'status': False,
-                'title': "Delete Data",
-                'message': "Failed Delete Data",
-                'icon': 'error'
-            })
+# Formating Error
+def format_errors(errors):
+    formatted_errors = []
     
+    for field, error_list in errors.items():
+        for error in error_list:
+            message = error.get('message', '')
+            formatted_errors.append(f"{field} ({message})")
+    
+    return "Failed Register: " + ", ".join(formatted_errors)
+
 def pagination_page(request, list):
     pagination = Paginator(list, 10)
     page_number = request.GET.get('page')

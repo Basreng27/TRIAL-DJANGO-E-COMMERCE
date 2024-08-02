@@ -19,7 +19,8 @@ from django.urls import path, include
 from ecommerce import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', views.login, name='login'),
+    path('register', views.register, name='register'), 
+    # path('admin/', admin.site.urls),
     path('ecommerce/', include('ecommerce.urls')),
-    path('', views.login)
 ]

@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.db.models import Q
 from ...models import Categories
 from ...form import CategoryForm
-from ...helpers import save_success, save_failed, delete_success, delete_failed, pagination_page
+from ...helpers import pagination_page, response_success, response_failed
 
 def page_category(request):
     name = request.GET.get('name', '').strip()
@@ -39,9 +39,9 @@ def form_category(request, id=None):
         if form.is_valid():
             form.save()
             
-            return save_success("category")
+            return response_success('category', 'Save', 'Successfully Save Data')
         else:
-            return save_failed()
+            return response_failed(form.errors.as_json())
         
     data = {
         'form': form,
@@ -56,6 +56,6 @@ def delete_category(request, id):
     if request.method == 'DELETE':
         category.delete()
         
-        return delete_success("category")
+        return response_success('category', 'Save', 'Successfully Save Data')
     else:
-        return delete_failed()
+        return response_failed()

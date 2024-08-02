@@ -1,9 +1,10 @@
+import json
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.db.models import Q
 from ...models import Products
 from ...form import ProductForm
-from ...helpers import save_success, save_failed, delete_success, delete_failed, pagination_page
+from ...helpers import pagination_page, response_success, response_failed
 
 def page_product(request):
     name = request.GET.get('name', '').strip()
@@ -15,7 +16,7 @@ def page_product(request):
         filters |= Q(name__icontains=name)
     if description:
         filters |= Q(description__icontains=description)
-        
+
     product = Products.objects.filter(filters)
     pagination = pagination_page(request, product)
     
@@ -39,9 +40,9 @@ def form_product(request, id=None):
         if form.is_valid():
             form.save()
 
-            return save_success("product")
+            return response_success('product', 'Save', 'Successfully Save Data')
         else:
-            return save_failed()
+            return response_failed(form.errors.as_json())
 
     data = {
         'form': form,
@@ -56,7 +57,7 @@ def delete_product(request, id):
     if request.method == 'DELETE':
         product.delete()
         
-        return delete_success("product")
+        return response_success('product', 'Delete', 'Successfully Delete Data')
     else:
-        return delete_failed()
+        return response_failed()
     

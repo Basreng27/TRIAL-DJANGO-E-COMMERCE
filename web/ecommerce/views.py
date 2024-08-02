@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .modules.auth.login import login_view
+from .modules.auth.login import page_login
+from .modules.auth.register import page_register
 from .modules.master.product import page_product, delete_product, form_product
 from .modules.master.category import page_category, delete_category, form_category
 
@@ -12,7 +13,10 @@ def dashboard(request):
 
 # Auth
 def login(request):
-    return login_view(request)
+    return page_login(request)
+
+def register(request):
+    return page_register(request)
 
 # Master Product
 def product(request):

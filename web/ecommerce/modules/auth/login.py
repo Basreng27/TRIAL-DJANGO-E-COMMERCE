@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
-def login_view (request):
+def page_login (request):
     return render(request, 'auth/login.html')

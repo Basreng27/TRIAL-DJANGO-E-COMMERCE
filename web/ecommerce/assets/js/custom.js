@@ -23,7 +23,7 @@ $(document).ready(function(){
         event.preventDefault();
 
         Swal.fire({
-            title: "Are you sure save data ?",
+            title: "Are you sure ?",
             icon: "warning",
             showCancelButton: true,
             cancelButtonColor: "#d33",
@@ -34,10 +34,14 @@ $(document).ready(function(){
                 var form = $('#modalForm form');
                 var url = form.attr('action');
                 var data = form.serialize();
+                var csrfToken = getCookie('csrftoken');
                 
                 $.ajax({
                     url: url,
                     method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken  // Add CSRF token to header
+                    },
                     data: data,
                     success: function(response) {
                         Swal.fire({
