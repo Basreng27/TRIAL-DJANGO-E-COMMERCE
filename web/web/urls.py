@@ -20,7 +20,8 @@ from ecommerce import views
 
 urlpatterns = [
     path('', views.login, name='login'),
-    path('register', views.register, name='register'), 
-    # path('admin/', admin.site.urls),
-    path('ecommerce/', include('ecommerce.urls')),
+    path('login', views.login, name='login'),
+    path('process_login', views.login_process, name='process-login'),
+    path('register', views.register, name='register'),
+    path('ecommerce/', include('ecommerce.urls'), name='ecommerce'),
 ]

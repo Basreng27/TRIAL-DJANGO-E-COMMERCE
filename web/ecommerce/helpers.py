@@ -14,10 +14,15 @@ def response_success(url, title, message):
 
 # Response Json Failed
 def response_failed(title, errors=None):
+    if isinstance(errors, str):
+        message = errors
+    else:
+        message = format_errors(json.loads(errors))
+        
     return JsonResponse({
                 'status': False,
                 'title': title,
-                'message': format_errors(json.loads(errors)),
+                'message': message,
                 'icon': 'error'
             })
 

@@ -16,6 +16,7 @@
 
         <title>E-Commerce Login</title>
 
+        <!-- Load Assets -->
         <link href="{% static 'css/app.css' %}" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
     </head>
@@ -28,52 +29,19 @@
                         <div class="d-table-cell align-middle">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="m-sm-4">
+                                    <div class="m-sm-4" id="modalForm">
                                         <div class="text-center">
                                             Login E-Commerce
                                         </div>
 
-                                        <form>
-                                            <div class="mb-3">
-                                                <label class="form-label">Email</label>
-                                                <input
-                                                class="form-control form-control-lg"
-                                                type="email"
-                                                name="email"
-                                                placeholder="Enter your email"
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Password</label>
-                                                <input
-                                                class="form-control form-control-lg"
-                                                type="password"
-                                                name="password"
-                                                placeholder="Enter your password"
-                                                />
-                                                <small>
+                                        <form method="POST" action="{{ url_action }}" id="login">
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
+
+                                            <div class="text-center">
                                                 <a href="{% url 'register' %}">Register</a>
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <label class="form-check">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    value="remember-me"
-                                                    name="remember-me"
-                                                    checked
-                                                />
-                                                <span class="form-check-label">
-                                                    Remember me next time
-                                                </span>
-                                                </label>
-                                            </div>
-                                            <div class="text-center mt-3">
-                                                <a href="index.html" class="btn btn-lg btn-primary"
-                                                >Sign in</a
-                                                >
-                                                <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
+
+                                                <button type="submit" class="btn btn-lg btn-primary save">Sign in</button>
                                             </div>
                                         </form>
                                     </div>
@@ -85,6 +53,14 @@
             </div>
         </main>
 
+        <!-- Jquery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <!-- Sweet Alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Load Assets -->
         <script src="{% static 'js/app.js' %}"></script>
+        <script src="{% static 'js/custom.js' %}"></script>
     </body>
 </html>

@@ -35,7 +35,7 @@ $(document).ready(function(){
                 var url = form.attr('action');
                 var data = form.serialize();
                 var csrfToken = getCookie('csrftoken');
-                
+
                 $.ajax({
                     url: url,
                     method: 'POST',
@@ -44,6 +44,9 @@ $(document).ready(function(){
                     },
                     data: data,
                     success: function(response) {
+                        if (typeof response === 'string')
+                            response = JSON.parse(response)
+
                         Swal.fire({
                             title: response.title,
                             text: response.message,
@@ -87,6 +90,52 @@ $(document).ready(function(){
                         'X-CSRFToken': csrfToken  // Add CSRF token to header
                     },
                     success: function(response) {
+                        Swal.fire({
+                            title: response.title,
+                            text: response.message,
+                            icon: response.icon
+                        }).then(() => {
+                            if (response.status)
+                                window.location.href = response.redirect;
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Error delete data.",
+                            icon: "error"
+                        });    
+                    }
+                });
+            }
+        });
+    })
+
+    $('.logout').on('click', function(event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure Logout ?",
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonColor: "#d33",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = $(this).data('url');
+                var csrfToken = getCookie('csrftoken');
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken  // Add CSRF token to header
+                    },
+                    success: function(response) {
+                        if (typeof response === 'string')
+                            response = JSON.parse(response)
+                        
                         Swal.fire({
                             title: response.title,
                             text: response.message,

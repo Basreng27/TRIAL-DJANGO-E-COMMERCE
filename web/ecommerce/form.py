@@ -4,6 +4,18 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 # Auth
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+        labels = {
+            'username': 'Username',
+            'password': 'Password',
+        }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control mb-3'}),
+        }
 class RegisterForm(forms.ModelForm):
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class': 'form-control mb-3'}))
 
