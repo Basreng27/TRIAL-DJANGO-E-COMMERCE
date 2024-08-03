@@ -1,4 +1,12 @@
-<form method="post" action="{{ url_action }}">
+<form method="post" action="{{ url_action }}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 </form>
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            dropdownParent: $('#modalForm')
+        });
+    })
+</script>

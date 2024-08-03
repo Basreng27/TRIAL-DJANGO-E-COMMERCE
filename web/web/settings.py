@@ -35,6 +35,14 @@ STATICFILES_DIRS = [
     BASE_DIR / "ecommerce/assets",
 ]
 
+# Add For Images
+MEDIA_URL = 'ecommerce/assets/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'ecommerce/assets/')
+
+# Setting Max
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB
+
 # Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

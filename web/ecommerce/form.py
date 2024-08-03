@@ -59,23 +59,6 @@ class RegisterForm(forms.ModelForm):
         return user
 
 # Master
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Products
-        fields = ['name', 'description', 'price', 'stock']
-        labels = {
-            'name': 'Name',
-            'description': 'Description',
-            'price': 'Price',
-            'stock': 'Stock',
-        }
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control mb-3'}),
-            'description': forms.Textarea(attrs={'class': 'form-control mb-3'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control mb-3'}),
-            'stock': forms.NumberInput(attrs={'class': 'form-control mb-3'}),
-        }
-
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Categories
@@ -88,3 +71,29 @@ class CategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control mb-3'}),
             'description': forms.Textarea(attrs={'class': 'form-control mb-3'}),
         }
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Products
+        fields = ['category_id', 'image', 'name', 'description', 'price', 'stock']
+        labels = {
+            'category_id': 'Category',
+            'image': 'Upload Image',
+            'name': 'Name',
+            'description': 'Description',
+            'price': 'Price',
+            'stock': 'Stock',
+        }
+        widgets = {
+            'category_id': forms.Select(attrs={'class': 'form-control mb-3 select2', 'id':'category', 'style': 'width:100% !important'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control mb-3'}),
+            'name': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'description': forms.Textarea(attrs={'class': 'form-control mb-3'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control mb-3'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control mb-3'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+        
+        self.fields['category_id'].empty_label = '--Select--'

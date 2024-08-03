@@ -2,7 +2,9 @@
     <thead>
         <tr>
             <th width="5%">No</th>
+            <th>Image</th>
             <th>Name</th>
+            <th>Category</th>
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
@@ -14,7 +16,15 @@
         {% for d in data %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
+                <td>
+                    {% if d.image %}
+                        <img src="{{ d.image.url }}" alt="{{ d.name }}" width="50" height="50">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
                 <td>{{ d.name }}</td>
+                <td>{{ d.category_id.name }}</td>
                 <td>{{ d.description }}</td>
                 <td>Rp.{{ d.price }}</td>
                 <td>{{ d.stock }}</td>

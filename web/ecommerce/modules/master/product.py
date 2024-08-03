@@ -1,4 +1,3 @@
-import json
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.db.models import Q
@@ -30,10 +29,10 @@ def page_product(request):
 def form_product(request, id=None):
     if id:
         product = get_object_or_404(Products, id=id)
-        form = ProductForm(request.POST or None, instance=product)
+        form = ProductForm(request.POST or None, request.FILES or None, instance=product)
         url = reverse('product-form-update', kwargs={'id': id})
     else:
-        form = ProductForm(request.POST or None)
+        form = ProductForm(request.POST or None, request.FILES or None)
         url = reverse('product-form')
 
     if request.method == 'POST':

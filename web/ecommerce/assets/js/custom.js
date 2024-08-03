@@ -31,18 +31,25 @@ $(document).ready(function(){
             confirmButtonText: "Save"
         }).then((result) => {
             if (result.isConfirmed) {
-                var form = $('#modalForm form');
-                var url = form.attr('action');
-                var data = form.serialize();
+                // var form = $('#modalForm form');
+                // var url = form.attr('action');
+                // var data = form.serialize();
+                // var csrfToken = getCookie('csrftoken');
+                var form = $('#modalForm form')[0];  // Dapatkan elemen form sebagai DOM object
+                var formData = new FormData(form);   // Buat FormData dari elemen form
+                var url = $(form).attr('action');
                 var csrfToken = getCookie('csrftoken');
-
+console.log(formData);
                 $.ajax({
                     url: url,
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': csrfToken  // Add CSRF token to header
                     },
-                    data: data,
+                    // data: data,
+                    data: formData,
+                    processData: false,  // Jangan proses data (jangan mengubah FormData menjadi query string)
+                    contentType: false,  // Jangan atur header content-type (FormData akan mengatur ini)
                     success: function(response) {
                         if (typeof response === 'string')
                             response = JSON.parse(response)
