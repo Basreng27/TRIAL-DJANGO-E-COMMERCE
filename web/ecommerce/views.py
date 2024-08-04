@@ -3,6 +3,7 @@ from .modules.auth.login import page_login, process_login, process_logout
 from .modules.auth.register import page_register
 from .modules.master.product import page_product, delete_product, form_product
 from .modules.master.category import page_category, delete_category, form_category
+from .modules.guest.pages import initial_page, page_shop, page_shop_detail, page_cart, page_checkout
 
 def dashboard(request):
     data = {
@@ -43,3 +44,19 @@ def category_form(request, id=None):
 
 def category_delete(request, id=None):
     return delete_category(request, id)
+
+# Guest
+def page(request):
+    return initial_page(request)
+
+def shop(request):
+    return page_shop(request)
+
+def shop_detail(request):
+    return page_shop_detail(request)
+
+def cart(request):
+    return page_cart(request)
+
+def checkout(request):
+    return page_checkout(request)

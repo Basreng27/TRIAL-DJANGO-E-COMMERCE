@@ -16,4 +16,10 @@ urlpatterns = [
     path('category_form', views.category_form, name='category-form'),
     path('category_form/<int:id>', views.category_form, name='category-form-update'),
     path('category_delete/<int:id>', views.category_delete, name='category-delete'),
+    
+    # guest
+    path('shop', views.page_shop, name='shop'),
+    path('shop_detail', views.page_shop_detail, name='shop-detail'),
+    path('cart', views.page_cart, name='cart'),
+    path('checkout', views.page_checkout, name='checkout'),
 ]
