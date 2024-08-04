@@ -38,7 +38,7 @@ def format_errors(errors):
     return "Failed Register: " + ", ".join(formatted_errors)
 
 def pagination_page(request, list):
-    pagination = Paginator(list, 10)
+    pagination = Paginator(list, 5)
     page_number = request.GET.get('page')
     
     return pagination.get_page(page_number)
