@@ -1,10 +1,25 @@
 from django.shortcuts import render
+from django.db.models import Count
+from ...models import Products, Categories
+from ...helpers import pagination_page
 
 def initial_page(request):
-    return render(request, 'guest/template/initial_page.html')
+    data = {
+        'products': Products.objects.order_by('?')[:4], # Menampilkan Acak dan Limit 4
+    }
+    
+    return render(request, 'guest/template/initial_page.html', data)
 
 def page_shop(request):
-    return render(request, 'guest/page/shop.html')
+    product = Products.objects.all()
+    pagination = pagination_page(request, product)
+    
+    data = {
+        'data': pagination,
+        'categories': Categories.objects.annotate(product_count=Count('products')), # Menghitung Total Jumlah Product Pada Setiap Category
+    }
+    
+    return render(request, 'guest/page/shop.html', data)
 
 def page_shop_detail(request):
     return render(request, 'guest/page/shop_detail.html')
