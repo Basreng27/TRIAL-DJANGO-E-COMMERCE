@@ -26,6 +26,7 @@ urlpatterns = [
     path('process_login', views.login_process, name='process-login'),
     path('register', views.register, name='register'),
     path('ecommerce/', include('ecommerce.urls'), name='ecommerce'),
+    path('apirest/', include('apirest.urls'), name='apirest')
 ]
 
 # Get Url Image

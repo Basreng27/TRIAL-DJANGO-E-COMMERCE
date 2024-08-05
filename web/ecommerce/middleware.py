@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth import get_user_model # Get User Login
+from apirest.urls import *
 
 User = get_user_model()
 
@@ -13,7 +14,22 @@ class JWTAuthenticationMiddleware:
     def __call__(self, request):
         token = request.COOKIES.get('access_token')
         
-        paths = [reverse('page'), reverse('login'), reverse('register'), reverse('process-login'), reverse('shop'), reverse('shop-detail'), reverse('cart'), reverse('checkout')]
+        paths = [
+            reverse('page'), 
+            reverse('login'), 
+            reverse('logout'),
+            reverse('register'), 
+            reverse('process-login'), 
+            reverse('shop'), 
+            reverse('shop-detail'), 
+            reverse('cart'), 
+            reverse('checkout'), 
+            reverse('token_obtain_pair'), 
+            reverse('token_refresh'),
+            reverse('brand'),
+            reverse('token-login'),
+            reverse('token-logout'),
+        ]
         
         if token:
             try:
