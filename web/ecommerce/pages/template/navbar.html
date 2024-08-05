@@ -6,7 +6,7 @@
   <div class="navbar-collapse collapse">
     <ul class="navbar-nav navbar-align">
       <li class="nav-item dropdown">
-        <span class="text-dark">Charles Hall</span>
+        <span class="text-dark">{{ user.first_name|default_if_none:'' }} {{ user.last_name|default_if_none:'' }}</span>
 
         <a class="btn btn-danger logout" data-url="{% url 'logout' %}" href="#"> Logout</a>
       </li>

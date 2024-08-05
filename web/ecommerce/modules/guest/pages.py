@@ -4,6 +4,8 @@ from ...models import Products, Categories
 from ...helpers import pagination_page
 
 def initial_page(request):
+    # request.user.id ==> Get User ID Login
+    
     data = {
         'products': Products.objects.order_by('?')[:4], # Menampilkan Acak dan Limit 4
     }
