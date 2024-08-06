@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from ecommerce import views
+from apininja.api import api
 
 urlpatterns = [
     path('', views.page, name='page'),
@@ -26,7 +27,8 @@ urlpatterns = [
     path('process_login', views.login_process, name='process-login'),
     path('register', views.register, name='register'),
     path('ecommerce/', include('ecommerce.urls'), name='ecommerce'),
-    path('apirest/', include('apirest.urls'), name='apirest')
+    path('apirest/', include('apirest.urls'), name='apirest'),
+    path('apininja/', api.urls, name='apininja'),
 ]
 
 # Get Url Image

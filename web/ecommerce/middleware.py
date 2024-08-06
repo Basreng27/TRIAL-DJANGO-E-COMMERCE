@@ -14,24 +14,27 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
 
     def __call__(self, request):
         # Check if the path is part of the API
-        if request.path.startswith('/apirest/'):
+        if request.path.startswith('/apirest/') or request.path.startswith('/apininja/'):
             # Process API authentication
             token = request.COOKIES.get('access_token') or request.headers.get('Authorization')
             
             if token:
                 if token.startswith('Bearer '):
                     token = token.split(' ')[1]
-                try:
-                    access_token = AccessToken(token)
-                    user_id = access_token['user_id']
-                    request.user = User.objects.get(id=user_id)
-                except Exception:
-                    return JsonResponse({'error': 'Invalid token'}, status=401)
+
+                if request.path.startswith('/apirest/'):
+                    try:
+                        access_token = AccessToken(token)
+                        user_id = access_token['user_id']
+                        request.user = User.objects.get(id=user_id)
+                    except Exception:
+                        return JsonResponse({'error': 'Invalid token'}, status=401)
             else:
                 if request.path not in [
                     reverse('token_obtain_pair'), 
                     reverse('token_refresh'),
                     reverse('token-login'),
+                    '/apininja/login',
                 ]:
                     return JsonResponse({'error': 'Authentication credentials were not provided.'}, status=401)
         else:
