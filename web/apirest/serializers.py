@@ -9,4 +9,4 @@ class BrandSerializer(serializers.ModelSerializer):
 class ShippingMethodSerializers(serializers.ModelSerializer):
     class Meta:
         model = ShippingMethod
-        fields = ['name', 'description']
+        fields = ['id', 'name', 'description']

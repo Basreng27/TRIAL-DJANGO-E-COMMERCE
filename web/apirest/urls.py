@@ -9,6 +9,9 @@ urlpatterns = [
     path('brand_update/<int:pk>', BrandUpdate.as_view(), name='brand-update'),
     path('brand_delete/<int:pk>', BrandDelete.as_view(), name='brand-delete'),
     
+    path('shipping_method', ShippingMethods.as_view(), name='shipping-method'),
+    path('shipping_method/<int:id>', ShippingMethods.as_view(), name='shipping-method-detail'),
+    
     path('token/login', CustomTokenObtainPairView.as_view(), name='token-login'),
     path('token/logout', Logout.as_view(), name='token-logout'),
     

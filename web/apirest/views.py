@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -95,3 +95,57 @@ class BrandDelete(generics.DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         # Handle DELETE request
         return self.destroy(request, *args, **kwargs)
+    
+class ShippingMethods(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, *args, **kwargs):
+        # Mendapatkan ID dari parameter URL
+        shipping_id = kwargs.get('id')
+        
+        if shipping_id:
+            # Mengambil objek tunggal berdasarkan ID
+            shipping_method = get_object_or_404(ShippingMethod, id=shipping_id)
+            serializer = ShippingMethodSerializers(shipping_method)
+            return Response(serializer.data)
+        else:
+            # Mengambil semua objek
+            query = ShippingMethod.objects.all()
+            serializer = ShippingMethodSerializers(query, many=True)
+            return Response(serializer.data)
+    
+    def post(self, request, *args, **kwargs):
+        serializer = ShippingMethodSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        # Create
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def put(self, request, *args, **kwargs):
+            shipping_id = kwargs.get('id')
+            shipping_method = get_object_or_404(ShippingMethod, id=shipping_id)
+            
+            serializer = ShippingMethodSerializers(shipping_method, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, *args, **kwargs):
+        shipping_id = kwargs.get('id')
+        shipping_method = get_object_or_404(ShippingMethod, id=shipping_id)
+        
+        serializer = ShippingMethodSerializers(shipping_method, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, *args, **kwargs):
+        shipping_id = kwargs.get('id')
+        shipping_method = get_object_or_404(ShippingMethod, id=shipping_id)
+        
+        shipping_method.delete()
+        
+        return Response("OK", status=status.HTTP_200_OK)
