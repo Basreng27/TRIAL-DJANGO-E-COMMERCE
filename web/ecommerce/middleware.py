@@ -3,55 +3,66 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth import get_user_model # Get User Login
+from django.utils.deprecation import MiddlewareMixin
 from apirest.urls import *
 
 User = get_user_model()
 
-class JWTAuthenticationMiddleware:
-    def __init__(self, get_response):
+class JWTAuthenticationMiddleware(MiddlewareMixin):
+    def __init__(self, get_response=None):
         self.get_response = get_response
 
     def __call__(self, request):
-        token = request.COOKIES.get('access_token')
-        
-        paths = [
-            reverse('page'), 
-            reverse('login'), 
-            reverse('logout'),
-            reverse('register'), 
-            reverse('process-login'), 
-            reverse('shop'), 
-            reverse('shop-detail'), 
-            reverse('cart'), 
-            reverse('checkout'), 
-            reverse('token_obtain_pair'), 
-            reverse('token_refresh'),
-            reverse('brand'),
-            reverse('token-login'),
-            reverse('token-logout'),
-        ]
-        
-        if token:
-            try:
-                # Decode the token
-                access_token = AccessToken(token)
-                # Retrieve the user id from the token
-                user_id = access_token['user_id']
-                # Set the user to the request
-                request.user = User.objects.get(id=user_id)
-            except Exception as e:
-                # Token is invalid, return a 401 response
-                return JsonResponse({'error': 'Invalid token'}, status=401)
+        # Check if the path is part of the API
+        if request.path.startswith('/apirest/'):
+            # Process API authentication
+            token = request.COOKIES.get('access_token') or request.headers.get('Authorization')
+            
+            if token:
+                if token.startswith('Bearer '):
+                    token = token.split(' ')[1]
+                try:
+                    access_token = AccessToken(token)
+                    user_id = access_token['user_id']
+                    request.user = User.objects.get(id=user_id)
+                except Exception:
+                    return JsonResponse({'error': 'Invalid token'}, status=401)
+            else:
+                if request.path not in [
+                    reverse('token_obtain_pair'), 
+                    reverse('token_refresh'),
+                    reverse('token-login'),
+                ]:
+                    return JsonResponse({'error': 'Authentication credentials were not provided.'}, status=401)
         else:
-            # If the path is not in the allowed list, redirect to login
-            if request.path not in paths:
-                return redirect('login')
+            # Process web authentication
+            token = request.COOKIES.get('access_token')
+            
+            paths = [
+                reverse('page'), 
+                reverse('login'), 
+                reverse('logout'),
+                reverse('register'), 
+                reverse('process-login'), 
+                reverse('shop'), 
+                reverse('shop-detail'), 
+                reverse('cart'), 
+                reverse('checkout'),
+            ]
+            
+            if token:
+                try:
+                    access_token = AccessToken(token)
+                    user_id = access_token['user_id']
+                    request.user = User.objects.get(id=user_id)
+                except Exception:
+                    return redirect('login')
+            else:
+                if request.path not in paths:
+                    return redirect('login')
 
-        # If user is not set, set it to AnonymousUser
         if not hasattr(request, 'user'):
             from django.contrib.auth.models import AnonymousUser
             request.user = AnonymousUser()
 
-        response = self.get_response(request)
-        
-        return response
+        return self.get_response(request)

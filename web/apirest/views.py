@@ -47,5 +47,51 @@ class Logout(APIView):
 
 class BrandList(generics.ListAPIView):
     queryset = Brand.objects.all()
-    serializer_class = BrandSerializers
+    serializer_class = BrandSerializer
     permission_classes = [IsAuthenticated]
+    
+class BrandCreate(generics.CreateAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        # Create
+        self.perform_create(serializer)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class BrandDetail(generics.RetrieveAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_object(self):
+        obj = Brand.objects.get(id=self.kwargs["id"])
+        
+        return obj
+
+class BrandUpdate(generics.UpdateAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, *args, **kwargs):
+        # Handle PATCH requests
+        return self.update(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        # Handle PUT request
+        return self.update(request, *args, **kwargs)
+
+class BrandDelete(generics.DestroyAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        # Handle DELETE request
+        return self.destroy(request, *args, **kwargs)
