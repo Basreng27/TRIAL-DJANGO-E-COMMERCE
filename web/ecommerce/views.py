@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import render
 from .modules.auth.login import page_login, process_login, process_logout
 from .modules.auth.register import page_register
