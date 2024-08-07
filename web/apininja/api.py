@@ -70,9 +70,9 @@ def PaymentMethodList(request):
     
     return[
         {
-            "id":d.id,
-            "name":d.name,
-            "description":d.description,
+            "id": d.id,
+            "name": d.name,
+            "description": d.description,
         }
         # For Loop
         for d in data
@@ -103,6 +103,133 @@ def update(request, id: int, data: PaymentMethodSchema):
 @api.delete("/payment_method/{id}", auth=auth)
 def delete(request, id: int):
     data = get_object_or_404(PaymentMethod, id=id)
+    
+    data.delete()
+    
+    return {"message": "Deleted successfully"}
+
+class OrderSchema(Schema):
+    customer_id: int
+    shipping_id: int
+    order_date: str
+    total_amount: float
+    status: str
+    shipping_address: str
+    
+@api.get('/order', auth=auth)
+def PaymentMethodList(request):
+    data = Order.objects.all()
+    
+    return[
+        {
+            "id": d.id,
+            "customer": f'{d.customer_id.first_name} {d.customer_id.first_name}',
+            "shipping": d.shipping_id.name,
+            "order_date": d.order_date,
+            "total_amount": d.total_amount,
+            "status": d.status,
+            "shipping_address": d.shipping_address,
+        }
+        # For Loop
+        for d in data
+    ]
+    
+@api.post("/order", auth=auth)
+def create(request, payload: OrderSchema):
+    # Parse order_date
+    try:
+        order_date = datetime.fromisoformat(payload.order_date)
+    except ValueError:
+        return {"error": "Invalid date format. Use ISO 8601 format."}
+    
+    # Get the customer and shipping method objects
+    try:
+        customer = User.objects.get(id=payload.customer_id)
+    except User.DoesNotExist:
+        return {"error": "Customer not found."}
+    
+    try:
+        shipping_method = ShippingMethod.objects.get(id=payload.shipping_id)
+    except ShippingMethod.DoesNotExist:
+        return {"error": "Shipping method not found."}
+    
+    # data = Order.objects.create(**payload.dict())
+    data = Order.objects.create(
+        customer_id=customer,
+        shipping_id=shipping_method,
+        order_date=order_date,
+        total_amount=payload.total_amount,
+        status=payload.status,
+        shipping_address=payload.shipping_address
+    )
+    
+    return {
+        "id": data.id,
+        "customer": f'{data.customer_id.first_name} {data.customer_id.first_name}',
+        "shipping": data.shipping_id.name,
+        "order_date": data.order_date,
+        "total_amount": data.total_amount,
+        "status": data.status,
+        "shipping_address": data.shipping_address,
+    }
+
+@api.get("/order/{id}", auth=auth)
+def get(request, id: int):
+    data = get_object_or_404(Order, id=id)
+    
+    return {
+        "id": data.id,
+        "customer": f'{data.customer_id.first_name} {data.customer_id.first_name}',
+        "shipping": data.shipping_id.name,
+        "order_date": data.order_date,
+        "total_amount": data.total_amount,
+        "status": data.status,
+        "shipping_address": data.shipping_address,
+    }
+
+@api.put("/order/{id}", auth=auth)
+def update(request, id: int, payload: OrderSchema):
+    # Parse order_date
+    try:
+        order_date = datetime.fromisoformat(payload.order_date)
+    except ValueError:
+        return {"error": "Invalid date format. Use ISO 8601 format."}
+    
+    # Get the customer and shipping method objects
+    try:
+        customer = User.objects.get(id=payload.customer_id)
+    except User.DoesNotExist:
+        return {"error": "Customer not found."}
+    
+    try:
+        shipping_method = ShippingMethod.objects.get(id=payload.shipping_id)
+    except ShippingMethod.DoesNotExist:
+        return {"error": "Shipping method not found."}
+    
+    order = get_object_or_404(Order, id=id)
+
+    # Update order fields
+    order.customer_id = customer
+    order.shipping_id = shipping_method
+    order.order_date = order_date
+    order.total_amount = payload.total_amount
+    order.status = payload.status
+    order.shipping_address = payload.shipping_address
+    order.save()
+    
+    return {
+        "id": order.id,
+        "customer": f'{order.customer_id.first_name} {order.customer_id.last_name}',
+        "shipping": order.shipping_id.name,
+        "order_date": order.order_date,
+        "total_amount": order.total_amount,
+        "status": order.status,
+        "shipping_address": order.shipping_address,
+    }
+
+@api.delete("/order/{id}", auth=auth)
+def delete(request, id: int):
+    data = get_object_or_404(Order, id=id)
     
     data.delete()
     
