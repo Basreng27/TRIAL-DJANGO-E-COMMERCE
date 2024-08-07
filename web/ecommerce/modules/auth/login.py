@@ -1,3 +1,4 @@
+import requests
 from django.contrib.auth import authenticate
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -25,9 +26,12 @@ def process_login(request):
             user = authenticate(request, username=username, password=password)
             
             if user is not None:
+                restapi_tokens = get_token_apirest(username, password)
+                
                 tokens = get_token(user)
                 response = HttpResponse(response_success('ecommerce', 'Login', 'Anda Berhasil Login'))
                 response.set_cookie('access_token', tokens['access'], httponly=True)
+                response.set_cookie('access_token_api_rest', restapi_tokens['access'], httponly=True)
                 
                 return response
             else:
@@ -36,6 +40,17 @@ def process_login(request):
             return response_failed('Login', 'Username Atau Password Kosong')
     
     return redirect('login')
+
+def get_token_apirest(username, password):
+    url = 'http://localhost:8000/apirest/token/login'
+    data = {'username': username, 'password': password}
+    
+    response = requests.post(url, data=data)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
 
 def get_token(user):
     refresh = RefreshToken.for_user(user)

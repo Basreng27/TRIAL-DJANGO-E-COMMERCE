@@ -1,5 +1,6 @@
 from django import forms
 from .models import Products, Categories
+from apirest.models import Brand
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -97,3 +98,17 @@ class ProductForm(forms.ModelForm):
         super(ProductForm, self).__init__(*args, **kwargs)
         
         self.fields['category_id'].empty_label = '--Select--'
+
+# Rest API
+class BrandForm(forms.ModelForm):
+    class Meta:
+        model = Brand
+        fields = ['name', 'description']
+        labels = {
+            'name': 'Name',
+            'description': 'Description',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'description': forms.Textarea(attrs={'class': 'form-control mb-3'}),
+        }

@@ -17,6 +17,12 @@ urlpatterns = [
     path('category_form/<int:id>', views.category_form, name='category-form-update'),
     path('category_delete/<int:id>', views.category_delete, name='category-delete'),
     
+    # Master Brand From Rest API
+    path('brand', views.brand, name='brand-restapi'),
+    path('brand_form', views.brand_form, name='brand-restapi-form'),
+    path('brand_form/<int:id>', views.brand_form, name='brand-restapi-update'),
+    path('brand_delete/<int:id>', views.brand_delete, name='brand-restapi-delete'),
+    
     # guest
     path('shop', views.page_shop, name='shop'),
     path('shop_detail', views.page_shop_detail, name='shop-detail'),

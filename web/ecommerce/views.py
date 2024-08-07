@@ -1,9 +1,10 @@
-import requests
+# import requests
 from django.shortcuts import render
 from .modules.auth.login import page_login, process_login, process_logout
 from .modules.auth.register import page_register
 from .modules.master.product import page_product, delete_product, form_product
 from .modules.master.category import page_category, delete_category, form_category
+from .modules.master.brand import page_brand, form_brand, delete_brand
 from .modules.guest.pages import initial_page, page_shop, page_shop_detail, page_cart, page_checkout
 
 def dashboard(request):
@@ -45,6 +46,16 @@ def category_form(request, id=None):
 
 def category_delete(request, id=None):
     return delete_category(request, id)
+
+# Master Brand Rest API
+def brand(request):
+    return page_brand(request)
+
+def brand_form(request, id=None):
+    return form_brand(request, id)
+
+def brand_delete(request, id=None):
+    return delete_brand(request, id)
 
 # Guest
 def page(request):
