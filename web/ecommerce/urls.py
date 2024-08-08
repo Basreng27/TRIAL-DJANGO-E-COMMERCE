@@ -23,6 +23,12 @@ urlpatterns = [
     path('brand_form/<int:id>', views.brand_form, name='brand-restapi-update'),
     path('brand_delete/<int:id>', views.brand_delete, name='brand-restapi-delete'),
     
+    # Master Payment Method From Rest API
+    path('payment_method', views.payment_method, name='payment-method-ninjaapi'),
+    path('payment_method_form', views.payment_method_form, name='payment-method-ninjaapi-form'),
+    path('payment_method_form/<int:id>', views.payment_method_form, name='payment-method-ninjaapi-update'),
+    path('payment_method_delete/<int:id>', views.payment_method_delete, name='payment-method-ninjaapi-delete'),
+    
     # guest
     path('shop', views.page_shop, name='shop'),
     path('shop_detail', views.page_shop_detail, name='shop-detail'),

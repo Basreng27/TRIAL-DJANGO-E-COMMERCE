@@ -1,4 +1,3 @@
-import json
 import requests
 from django.shortcuts import render
 from django.urls import reverse
@@ -73,9 +72,9 @@ def form_brand(request, id=None):
                 except ValueError:
                     error_data = response.text
 
-                return response_failed('Form', error_data)
+                return response_failed('Brand', error_data)
         else:
-            return response_failed('Form', form.errors.as_json())
+            return response_failed('Brand', form.errors.as_json())
 
     data = {
         'form': form,

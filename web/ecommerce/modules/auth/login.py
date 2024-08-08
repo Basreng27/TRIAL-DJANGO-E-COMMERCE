@@ -1,3 +1,4 @@
+import json
 import requests
 from django.contrib.auth import authenticate
 from django.shortcuts import render, redirect
@@ -27,11 +28,13 @@ def process_login(request):
             
             if user is not None:
                 restapi_tokens = get_token_apirest(username, password)
+                ninjaapi_tokens = get_token_apininja(username, password)
                 
                 tokens = get_token(user)
                 response = HttpResponse(response_success('ecommerce', 'Login', 'Anda Berhasil Login'))
                 response.set_cookie('access_token', tokens['access'], httponly=True)
                 response.set_cookie('access_token_api_rest', restapi_tokens['access'], httponly=True)
+                response.set_cookie('access_token_api_ninja', ninjaapi_tokens['token'], httponly=True)
                 
                 return response
             else:
@@ -47,6 +50,17 @@ def get_token_apirest(username, password):
     
     response = requests.post(url, data=data)
     
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+def get_token_apininja(username, password):
+    url = 'http://localhost:8000/apininja/login'
+    data = {'username': username, 'password': password}
+    
+    response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
+
     if response.status_code == 200:
         return response.json()
     else:

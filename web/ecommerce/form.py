@@ -1,6 +1,7 @@
 from django import forms
 from .models import Products, Categories
 from apirest.models import Brand
+from apininja.models import PaymentMethod
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -103,6 +104,20 @@ class ProductForm(forms.ModelForm):
 class BrandForm(forms.ModelForm):
     class Meta:
         model = Brand
+        fields = ['name', 'description']
+        labels = {
+            'name': 'Name',
+            'description': 'Description',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'description': forms.Textarea(attrs={'class': 'form-control mb-3'}),
+        }
+        
+# Ninja API
+class PaymentMethodForm(forms.ModelForm):
+    class Meta:
+        model = PaymentMethod
         fields = ['name', 'description']
         labels = {
             'name': 'Name',
