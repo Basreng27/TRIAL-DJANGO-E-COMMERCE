@@ -5,6 +5,7 @@ from .modules.auth.register import page_register
 from .modules.master.product import page_product, delete_product, form_product
 from .modules.master.category import page_category, delete_category, form_category
 from .modules.master.brand import page_brand, form_brand, delete_brand
+from .modules.master.shipping_method import page_shipping_method, form_shipping_method, delete_shipping_method
 from .modules.master.payment_method import page_payment_method, form_payment_method, delete_payment_method
 from .modules.guest.pages import initial_page, page_shop, page_shop_detail, page_cart, page_checkout
 
@@ -48,7 +49,8 @@ def category_form(request, id=None):
 def category_delete(request, id=None):
     return delete_category(request, id)
 
-# Master Brand Rest API
+# Rest API
+# Master Brand
 def brand(request):
     return page_brand(request)
 
@@ -57,6 +59,16 @@ def brand_form(request, id=None):
 
 def brand_delete(request, id=None):
     return delete_brand(request, id)
+
+# Master Shipping Method
+def shipping_method(request):
+    return page_shipping_method(request)
+
+def shipping_method_form(request, id=None):
+    return form_shipping_method(request, id)
+
+def shipping_method_delete(request, id=None):
+    return delete_shipping_method(request, id)
 
 # Master Brand Rest API
 def payment_method(request):

@@ -17,11 +17,17 @@ urlpatterns = [
     path('category_form/<int:id>', views.category_form, name='category-form-update'),
     path('category_delete/<int:id>', views.category_delete, name='category-delete'),
     
-    # Master Brand From Rest API
+    # Rest API
+    # Master Brand
     path('brand', views.brand, name='brand-restapi'),
     path('brand_form', views.brand_form, name='brand-restapi-form'),
     path('brand_form/<int:id>', views.brand_form, name='brand-restapi-update'),
     path('brand_delete/<int:id>', views.brand_delete, name='brand-restapi-delete'),
+    # Master Shipping Method
+    path('shipping_method', views.shipping_method, name='shipping-method-restapi'),
+    path('shipping_method_form', views.shipping_method_form, name='shipping-method-restapi-form'),
+    path('shipping_method_form/<int:id>', views.shipping_method_form, name='shipping-method-restapi-update'),
+    path('shipping_method_delete/<int:id>', views.shipping_method_delete, name='shipping-method-restapi-delete'),
     
     # Master Payment Method From Rest API
     path('payment_method', views.payment_method, name='payment-method-ninjaapi'),
