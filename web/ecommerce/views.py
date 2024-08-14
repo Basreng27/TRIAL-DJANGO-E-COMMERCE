@@ -8,6 +8,7 @@ from .modules.master.brand import page_brand, form_brand, delete_brand
 from .modules.master.shipping_method import page_shipping_method, form_shipping_method, delete_shipping_method
 from .modules.master.payment_method import page_payment_method, form_payment_method, delete_payment_method
 from .modules.guest.pages import initial_page, page_shop, page_shop_detail, page_cart, page_checkout
+from .modules.transaction.order import page_order, form_order
 
 def dashboard(request):
     data = {
@@ -79,6 +80,13 @@ def payment_method_form(request, id=None):
 
 def payment_method_delete(request, id=None):
     return delete_payment_method(request, id)
+
+# Transaction
+def order(request):
+    return page_order(request)
+
+def order_form(request, id=None):
+    return form_order(request, id)
 
 # Guest
 def page(request):

@@ -1,0 +1,35 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="5%">No</th>
+            <th>Name</th>
+            <th>Shipping</th>
+            <th>Shipping Addres</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th width="15%">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for d in data %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ d.customer }}</td>
+                <td>{{ d.shipping }}</td>
+                <td>{{ d.shipping_address }}</td>
+                <td>{{ d.total_amount }}</td>
+                <td>{{ d.order_date }}</td>
+                <td>{{ d.status }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary modal-form" data-bs-toggle="modal" data-bs-target="#modalForm" data-url="{% url 'order-ninjaapi-update' d.id %}">
+                        Update
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include "template/pagination.html" %}

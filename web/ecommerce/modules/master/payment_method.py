@@ -39,10 +39,10 @@ def form_payment_method(request, id=None):
     headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
     
     if id:
-        respone = requests.get(f'{url}/{id}', headers=headers)
+        response = requests.get(f'{url}/{id}', headers=headers)
         
-        if respone.status_code == 200:
-            payment_data = respone.json()
+        if response.status_code == 200:
+            payment_data = response.json()
             form = PaymentMethodForm(request.POST or None, initial=payment_data)
             url_action = reverse('payment-method-ninjaapi-update', kwargs={'id':id})
         else:
@@ -69,9 +69,9 @@ def form_payment_method(request, id=None):
                 return response_success('payment_method', 'Save', 'Successfully saved data')
             else:
                 try:
-                    error_data = respone.json()
+                    error_data = response.json()
                 except ValueError:
-                    error_data = respone.text
+                    error_data = response.text
                     
                 return response_failed('Payment Method', error_data)
         else:

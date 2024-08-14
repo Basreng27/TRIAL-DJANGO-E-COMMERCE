@@ -35,6 +35,11 @@ urlpatterns = [
     path('payment_method_form/<int:id>', views.payment_method_form, name='payment-method-ninjaapi-update'),
     path('payment_method_delete/<int:id>', views.payment_method_delete, name='payment-method-ninjaapi-delete'),
     
+    # Transaction
+    path('order', views.order, name='order-ninjaapi'),
+    path('order_form', views.order_form, name='order-ninjaapi-form'),
+    path('order_form/<int:id>', views.order_form, name='order-ninjaapi-update'),
+    
     # guest
     path('shop', views.page_shop, name='shop'),
     path('shop_detail', views.page_shop_detail, name='shop-detail'),

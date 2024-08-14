@@ -1,7 +1,7 @@
 from django import forms
 from .models import Products, Categories
 from apirest.models import Brand, ShippingMethod
-from apininja.models import PaymentMethod
+from apininja.models import PaymentMethod, Order
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -139,3 +139,23 @@ class PaymentMethodForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control mb-3'}),
             'description': forms.Textarea(attrs={'class': 'form-control mb-3'}),
         }
+        
+class OrderForm(forms.ModelForm):
+    ORDER_STATUS_CHOICES = [
+        ('DONE', 'Done'),
+        ('CANCEL', 'Cancel'),
+        ('WAITING', 'Waiting'),
+    ]
+    
+    status = forms.ChoiceField(
+        choices=ORDER_STATUS_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-control mb-3 select2',
+            'style': 'width:100% !important',
+        }),
+        label='Status Payment'
+    )
+
+    class Meta:
+        model = Order
+        fields = ['status']
