@@ -7,6 +7,7 @@ from .models import *
 from datetime import datetime, timedelta
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
+from typing import Optional
 
 api = NinjaAPI()
 
@@ -109,12 +110,12 @@ def delete(request, id: int):
     return {"message": "Deleted successfully"}
 
 class OrderSchema(Schema):
-    customer_id: int
-    shipping_id: int
-    order_date: str
-    total_amount: float
-    status: str
-    shipping_address: str
+    customer_id: Optional[int] = None
+    shipping_id: Optional[int] = None
+    order_date: Optional[str] = None
+    total_amount: Optional[float] = None
+    status: Optional[str] = None
+    shipping_address: Optional[str] = None
     
 @api.get('/order', auth=auth)
 def PaymentMethodList(request):
@@ -189,32 +190,56 @@ def get(request, id: int):
 
 @api.put("/order/{id}", auth=auth)
 def update(request, id: int, payload: OrderSchema):
-    # Parse order_date
-    try:
-        order_date = datetime.fromisoformat(payload.order_date)
-    except ValueError:
-        return {"error": "Invalid date format. Use ISO 8601 format."}
     
-    # Get the customer and shipping method objects
-    try:
-        customer = User.objects.get(id=payload.customer_id)
-    except User.DoesNotExist:
-        return {"error": "Customer not found."}
+    # try:
+    #     order_date = datetime.fromisoformat(payload.order_date)
+    # except ValueError:
+    #     return {"error": "Invalid date format. Use ISO 8601 format."}
     
-    try:
-        shipping_method = ShippingMethod.objects.get(id=payload.shipping_id)
-    except ShippingMethod.DoesNotExist:
-        return {"error": "Shipping method not found."}
+    # try:
+    #     customer = User.objects.get(id=payload.customer_id)
+    # except User.DoesNotExist:
+    #     return {"error": "Customer not found."}
+    
+    # try:
+    #     shipping_method = ShippingMethod.objects.get(id=payload.shipping_id)
+    # except ShippingMethod.DoesNotExist:
+    #     return {"error": "Shipping method not found."}
     
     order = get_object_or_404(Order, id=id)
 
-    # Update order fields
-    order.customer_id = customer
-    order.shipping_id = shipping_method
-    order.order_date = order_date
-    order.total_amount = payload.total_amount
-    order.status = payload.status
-    order.shipping_address = payload.shipping_address
+    # Update fields dynamically only if they are provided in the payload
+    if hasattr(payload, 'status') and payload.status is not None:
+        order.status = payload.status
+
+    if hasattr(payload, 'order_date') and payload.order_date is not None:
+        # Parse order_date
+        try:
+            order.order_date = datetime.fromisoformat(payload.order_date)
+        except ValueError:
+            return {"error": "Invalid date format. Use ISO 8601 format."}
+
+    if hasattr(payload, 'customer_id') and payload.customer_id is not None:
+        try:
+            customer = User.objects.get(id=payload.customer_id)
+            order.customer_id = customer
+        except User.DoesNotExist:
+            return {"error": "Customer not found."}
+
+    if hasattr(payload, 'shipping_id') and payload.shipping_id is not None:
+        # Get the customer and shipping method objects
+        try:
+            shipping_method = ShippingMethod.objects.get(id=payload.shipping_id)
+            order.shipping_id = shipping_method
+        except ShippingMethod.DoesNotExist:
+            return {"error": "Shipping method not found."}
+
+    if hasattr(payload, 'total_amount') and payload.total_amount is not None:
+        order.total_amount = payload.total_amount
+
+    if hasattr(payload, 'shipping_address') and payload.shipping_address is not None:
+        order.shipping_address = payload.shipping_address
+    
     order.save()
     
     return {

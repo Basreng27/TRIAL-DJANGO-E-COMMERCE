@@ -23,9 +23,11 @@
                 <td>{{ d.order_date }}</td>
                 <td>{{ d.status }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary modal-form" data-bs-toggle="modal" data-bs-target="#modalForm" data-url="{% url 'order-ninjaapi-update' d.id %}">
-                        Update
-                    </button>
+                    {% if d.status != 'DONE' %}
+                        <button type="button" class="btn btn-primary modal-form" data-bs-toggle="modal" data-bs-target="#modalForm" data-url="{% url 'order-ninjaapi-update' d.id %}">
+                            Update
+                        </button>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

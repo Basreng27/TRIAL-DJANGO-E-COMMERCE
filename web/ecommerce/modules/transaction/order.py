@@ -1,6 +1,7 @@
 import requests
 from django.shortcuts import render
 from django.urls import reverse
+from django.http import JsonResponse
 from ...helpers import response_failed, response_success, pagination_page
 from ...form import OrderForm
 
@@ -50,8 +51,7 @@ def form_order(request, id=None):
         else:
             return response_failed('Order', 'Failed Load Data API')
     else:
-        form = OrderForm(request.POST or None)
-        url_action = reverse('order-ninjaapi-form')
+        return response_failed('Order', 'ID Is Empty')
         
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -61,11 +61,14 @@ def form_order(request, id=None):
                 'status': form.cleaned_data['status'],
             }
             
-            if id:
-                response = requests.put(f'{url}/{id}', json=data_input, headers=headers)
-            else:
-                response = requests.post(url, json=data_input, headers=headers)
-                
+            try:
+                if id:
+                    response = requests.put(f'{url}/{id}', json=data_input, headers=headers)
+                else:
+                    return response_failed('Order', 'ID Is Empty')
+            except requests.exceptions.RequestException as e:
+                return JsonResponse({'error': f'Order: API request failed - {str(e)}'}, status=500)
+            
             if response.status_code in [200, 201]:
                 return response_success('order', 'Save', 'Successfully saved data')
             else:
