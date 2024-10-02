@@ -10,7 +10,7 @@ class Categories(models.Model):
     
     def __str__(self):
         return self.name
-    
+
 class Products(models.Model):
     category_id = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='img/product/', blank=True, null=True)

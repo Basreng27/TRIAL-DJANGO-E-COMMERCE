@@ -39,7 +39,7 @@ $(document).ready(function(){
                 var formData = new FormData(form);   // Buat FormData dari elemen form
                 var url = $(form).attr('action');
                 var csrfToken = getCookie('csrftoken');
-console.log(formData);
+
                 $.ajax({
                     url: url,
                     method: 'POST',

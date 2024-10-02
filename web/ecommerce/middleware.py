@@ -15,7 +15,6 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
 
     def __call__(self, request):
         # Check if the path is part of the API
-        
         if request.path.startswith('/apirest/') or request.path.startswith('/apininja/'):
             # Process API authentication
             token = request.COOKIES.get('access_token') or request.headers.get('Authorization')

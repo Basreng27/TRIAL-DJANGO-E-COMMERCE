@@ -57,7 +57,7 @@ def login(request, payload:LoginSchema):
 def logout(request):
     token = request.headers.get("Authorization").split(" ")[1]
     BlacklistedToken.objects.create(token=token)
-    
+
     return {"message": "Successfully logged out"}
 
 # Payment Method 
